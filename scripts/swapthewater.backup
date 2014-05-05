@@ -1,0 +1,220 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.1.4
+-- Dumped by pg_dump version 9.1.4
+-- Started on 2012-11-28 13:02:29
+
+SET statement_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SET check_function_bodies = false;
+SET client_min_messages = warning;
+
+--
+-- TOC entry 165 (class 3079 OID 11639)
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 1868 (class 0 OID 0)
+-- Dependencies: 165
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+SET search_path = public, pg_catalog;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- TOC entry 164 (class 1259 OID 16849)
+-- Dependencies: 5
+-- Name: trocas_agua; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE trocas_agua (
+    id integer NOT NULL,
+    data_troca timestamp without time zone NOT NULL,
+    id_voluntario integer NOT NULL
+);
+
+
+ALTER TABLE public.trocas_agua OWNER TO postgres;
+
+--
+-- TOC entry 163 (class 1259 OID 16847)
+-- Dependencies: 5 164
+-- Name: trocas_agua_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE trocas_agua_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.trocas_agua_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 1869 (class 0 OID 0)
+-- Dependencies: 163
+-- Name: trocas_agua_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE trocas_agua_id_seq OWNED BY trocas_agua.id;
+
+
+--
+-- TOC entry 1870 (class 0 OID 0)
+-- Dependencies: 163
+-- Name: trocas_agua_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('trocas_agua_id_seq', 1, true);
+
+
+--
+-- TOC entry 162 (class 1259 OID 16815)
+-- Dependencies: 5
+-- Name: voluntario; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE voluntario (
+    id integer NOT NULL,
+    nome character varying(45) NOT NULL
+);
+
+
+ALTER TABLE public.voluntario OWNER TO postgres;
+
+--
+-- TOC entry 161 (class 1259 OID 16813)
+-- Dependencies: 162 5
+-- Name: voluntario_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE voluntario_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.voluntario_id_seq OWNER TO postgres;
+
+--
+-- TOC entry 1871 (class 0 OID 0)
+-- Dependencies: 161
+-- Name: voluntario_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE voluntario_id_seq OWNED BY voluntario.id;
+
+
+--
+-- TOC entry 1872 (class 0 OID 0)
+-- Dependencies: 161
+-- Name: voluntario_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('voluntario_id_seq', 1, true);
+
+
+--
+-- TOC entry 1855 (class 2604 OID 16852)
+-- Dependencies: 163 164 164
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY trocas_agua ALTER COLUMN id SET DEFAULT nextval('trocas_agua_id_seq'::regclass);
+
+
+--
+-- TOC entry 1854 (class 2604 OID 16818)
+-- Dependencies: 162 161 162
+-- Name: id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY voluntario ALTER COLUMN id SET DEFAULT nextval('voluntario_id_seq'::regclass);
+
+
+--
+-- TOC entry 1862 (class 0 OID 16849)
+-- Dependencies: 164
+-- Data for Name: trocas_agua; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY trocas_agua (id, data_troca, id_voluntario) FROM stdin;
+\.
+
+
+--
+-- TOC entry 1861 (class 0 OID 16815)
+-- Dependencies: 162
+-- Data for Name: voluntario; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY voluntario (id, nome) FROM stdin;
+\.
+
+
+--
+-- TOC entry 1859 (class 2606 OID 16854)
+-- Dependencies: 164 164
+-- Name: trocas_agua_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY trocas_agua
+    ADD CONSTRAINT trocas_agua_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1857 (class 2606 OID 16820)
+-- Dependencies: 162 162
+-- Name: voluntario_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY voluntario
+    ADD CONSTRAINT voluntario_pkey PRIMARY KEY (id);
+
+
+--
+-- TOC entry 1860 (class 2606 OID 16865)
+-- Dependencies: 164 1856 162
+-- Name: trocas_agua_id_voluntario_fkey1; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY trocas_agua
+    ADD CONSTRAINT trocas_agua_id_voluntario_fkey1 FOREIGN KEY (id_voluntario) REFERENCES voluntario(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- TOC entry 1867 (class 0 OID 0)
+-- Dependencies: 5
+-- Name: public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+-- Completed on 2012-11-28 13:02:30
+
+--
+-- PostgreSQL database dump complete
+--
+
